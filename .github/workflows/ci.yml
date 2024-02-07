@@ -34,12 +34,3 @@ jobs:
           name: logs
           path: |
             plz-out/log
-      strategy:
-        fail-fast: false
-        matrix:
-          os:
-            - ubuntu-latest
-            - macos-latest
-          compiler:
-            - gcc
-            - clang
