@@ -18,14 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
       - name: Install for linux
         if: ${{ matrix.os == 'ubuntu-latest'}}
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             gcc \
-            clang \
-            python3-dev
+            clang
 
       - name: Install nasm
         if: ${{ matrix.os == 'macos-latest' }}
