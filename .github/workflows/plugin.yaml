@@ -39,7 +39,6 @@ jobs:
             nasm \
             gcc \
             llvm
-          brew install --overwrite python@3.11
 
       - name: Run tests
         run: ./pleasew test -e e2e --profile ${{ matrix.compiler }} --log_file ./plz-out/log/test.log -v debug
