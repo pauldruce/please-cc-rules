@@ -34,8 +34,7 @@ jobs:
           brew install \
             nasm \
             gcc \
-            llvm \
-            python3
+            llvm
 
       - name: Run tests
         run: ./pleasew test -e e2e --profile ${{ matrix.compiler }} --log_file ./plz-out/log/test.log -v debug
