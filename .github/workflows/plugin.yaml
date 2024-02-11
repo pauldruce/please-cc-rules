@@ -4,24 +4,6 @@ on:
   - pull_request
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install nasm
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: brew install nasm
-      - name: Run tests
-        run: ./pleasew test -e e2e --profile ${{ matrix.compiler }} --log_file plz-out/log/test.log
-      - name: Run e2e test
-        run: ./pleasew test -i e2e --profile ${{ matrix.compiler }} --log_file plz-out/log/e2e.log
-      - name: Archive logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: logs
-          path: |
-            plz-out/log
     strategy:
       fail-fast: false
       matrix:
@@ -31,6 +13,44 @@ jobs:
         compiler:
           - gcc
           - clang
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install for linux
+        if: ${{ matrix.os == 'ubuntu-latest'}}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc \
+            clang \
+            python3-dev
+
+      - name: Install nasm
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          brew update
+          brew install \
+            nasm \
+            gcc \
+            clang \
+            python3
+
+      - name: Run tests
+        run: ./pleasew test -e e2e --profile ${{ matrix.compiler }} --log_file ./plz-out/log/test.log -v debug
+
+      - name: Run e2e test
+        run: ./pleasew test -i e2e --profile ${{ matrix.compiler }} --log_file ./plz-out/log/e2e.log -v debug
+
+      - name: Archive logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: |
+            plz-out/log
+
   release:
     needs:
       - test
