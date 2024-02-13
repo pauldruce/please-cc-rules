@@ -1,4 +1,6 @@
 # Tests that a sequence of dependencies works as expected.
+subinclude("//build_defs:cc")
+
 cc_library(
     name = "lib1",
     srcs = ["lib1.cc"],
