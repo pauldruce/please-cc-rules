@@ -1,3 +1,5 @@
+# subinclude("//build_defs:cc")
+
 # github_repo(
 #     name = "gtest",
 #     bazel_compat = True,
